@@ -12,37 +12,38 @@
 
 #include "get_next_line.h"
 
-char *ft_read(int fd, char *stash)
+char *ft_read(int fd, char *buffer)
 {
 	char	*temp;
 	int		byte;
 
-	byte = 1;
 	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!temp)
 		return (NULL);
-	while (!ft_strchr(stash, '\n') && byte != 0)
+	byte = 1;
+	while (!ft_strchr(buffer, '\n') && byte != 0)
 	{
 		byte = read(fd, temp, BUFFER_SIZE);
-		if (byte < 0)
+		if (byte == -1)
 		{
 			free(temp);
+			free(buffer);
 			return (NULL);
 		}
 		temp[byte] = '\0';
-		stash = ft_strjoin(stash, temp);
+		buffer = ft_strjoin(buffer, temp);
 	}
 	free(temp);
-	return(stash);
+	return (buffer);
 }
 
 char *get_next_line(int fd)
 {
-	char	*line;
-	static char	*buffer;
+	char			*line;
+	static char		*buffer;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
+		return (0);
 	buffer = ft_read(fd, buffer);
 	if (!ft_strlen(buffer))
 	{
