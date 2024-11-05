@@ -36,6 +36,7 @@ int	main(int argc, char **argv)
 				while(line)
 				{
 					printf("%s", line);
+					free(line);
 					line = get_next_line(fd);
 				}
 			}
