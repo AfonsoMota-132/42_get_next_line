@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afogonca <afogonca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/31 09:47:47 by afogonca          #+#    #+#             */
-/*   Updated: 2024/10/31 12:09:28 by afogonca         ###   ########.fr       */
+/*   Created: 2024/11/05 10:01:03 by afogonca          #+#    #+#             */
+/*   Updated: 2024/11/05 10:01:07 by afogonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_getline(char *buffer)
 {
@@ -68,17 +68,17 @@ char	*ft_read(int fd, char *buffer)
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static char		*buffer;
+	static char		*buffer[4096];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	buffer = ft_read(fd, buffer);
-	if (!ft_strlen(buffer))
+	buffer[fd] = ft_read(fd, buffer[fd]);
+	if (!ft_strlen(buffer[fd]))
 	{
-		free(buffer);
+		free(buffer[fd]);
 		return (NULL);
 	}
-	line = ft_getline(buffer);
-	buffer = ft_bufferupdt(buffer);
+	line = ft_getline(buffer[fd]);
+	buffer[fd] = ft_bufferupdt(buffer[fd]);
 	return (line);
 }
